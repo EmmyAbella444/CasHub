@@ -1,0 +1,14 @@
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+social_net.db
+*.sqlite3
+posts.pdf
+.DS_Store
+.env
+
+# User-generated uploads
+static/images/*
+!static/images/.gitkeep
