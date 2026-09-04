@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CasHub · Register</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='register.css') }}">
+</head>
+<body>
+    <main class="register-page">
+        <section class="register-card">
+            <div class="brand">
+                <span class="brand-mark">C</span>
+                <div>
+                    <h1>Create your CasHub account</h1>
+                    <p>Document activities, reflections, and community involvement.</p>
+                </div>
+            </div>
+
+            {% include "_messages.html" %}
+
+            <form method="POST" action="{{ url_for('register') }}">
+                <fieldset>
+                    <legend><span class="number">1</span> Your profile</legend>
+
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" required>
+
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+
+                    <label for="description">Biography</label>
+                    <textarea id="description" name="description" rows="4"
+                              placeholder="Tell your community a little about yourself."></textarea>
+                </fieldset>
+
+                <fieldset>
+                    <legend><span class="number">2</span> Clubs</legend>
+                    <label for="clubs">Select your clubs</label>
+                    <select id="clubs" name="clubs[]" multiple>
+                        <optgroup label="Core clubs">
+                            <option value="Rainbow Alliance">Rainbow Alliance</option>
+                            <option value="Peace Forum">Peace Forum</option>
+                            <option value="ICE">ICE</option>
+                        </optgroup>
+                        <optgroup label="Student-led clubs">
+                            <option value="Politics club">Politics club</option>
+                            <option value="Entrepreneurship">Entrepreneurship</option>
+                        </optgroup>
+                    </select>
+                </fieldset>
+
+                <fieldset>
+                    <legend><span class="number">3</span> Password</legend>
+
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password"
+                           placeholder="8+ chars, number, special character" required>
+
+                    <label for="check_password">Confirm password</label>
+                    <input type="password" id="check_password" name="check_password" required>
+                </fieldset>
+
+                <button type="submit">Create account</button>
+            </form>
+
+            <p class="auth-link">Already registered?
+                <a href="{{ url_for('login') }}">Log in</a>
+            </p>
+        </section>
+    </main>
+</body>
+</html>

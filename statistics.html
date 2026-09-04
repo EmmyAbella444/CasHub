@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CasHub · Statistics</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='statistics.css') }}">
+</head>
+<body>
+<header class="container-top">
+    <a class="logo" href="{{ url_for('home') }}">CasHub</a>
+    <nav class="profile-buttons">
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('profile_user') }}">Profile</a>
+    </nav>
+</header>
+
+<div class="firework"></div>
+<div class="firework"></div>
+<div class="firework"></div>
+
+<main class="main">
+    <header class="header">
+        <h1 class="header__title">Congratulations 🎉</h1>
+        <p>Celebrating this week's activity across the CasHub community.</p>
+    </header>
+
+    <div class="leaderboards">
+        <section class="section2">
+            <h2 class="section__title">Students of the week</h2>
+            {% for user in most_posts_user %}
+                {% if loop.first %}
+                    <p class="section__content">🥇 {{ user[0] }} · {{ user[1] }} post(s)</p>
+                {% elif loop.index == 2 %}
+                    <p class="section__content">🥈 {{ user[0] }} · {{ user[1] }} post(s)</p>
+                {% elif loop.index == 3 %}
+                    <p class="section__content">🥉 {{ user[0] }} · {{ user[1] }} post(s)</p>
+                {% endif %}
+            {% else %}
+                <p>No posts this week yet.</p>
+            {% endfor %}
+        </section>
+
+        <section class="section1">
+            <h2 class="section__title">Clubs of the week</h2>
+            {% for club in most_posts_clubs %}
+                {% if loop.first %}
+                    <p class="section__content">🥇 {{ club[0] }} · {{ club[1] }} post(s)</p>
+                {% elif loop.index == 2 %}
+                    <p class="section__content">🥈 {{ club[0] }} · {{ club[1] }} post(s)</p>
+                {% elif loop.index == 3 %}
+                    <p class="section__content">🥉 {{ club[0] }} · {{ club[1] }} post(s)</p>
+                {% endif %}
+            {% else %}
+                <p>No club activity this week yet.</p>
+            {% endfor %}
+        </section>
+    </div>
+
+    <section class="history">
+        <h2 class="section__title">Students' post history</h2>
+        {% for user in student_stats %}
+            <p class="section__content">
+                📅
+                <a href="{{ url_for('students_profile', user_id=user[3]) }}">{{ user[0] }}</a>
+                posted {{ user[2] }} time(s).
+                {% if user[1] %}
+                    Last posted on {{ user[1] }}.
+                {% else %}
+                    No posts yet.
+                {% endif %}
+            </p>
+        {% else %}
+            <p>No registered students yet.</p>
+        {% endfor %}
+    </section>
+</main>
+</body>
+</html>

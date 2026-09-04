@@ -1,0 +1,123 @@
+:root {
+  --pink: #f1c1e7;
+  --purple: #a300c7;
+  --ink: #2c2430;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  color: var(--ink);
+  background: linear-gradient(270deg, #ffead1, #ffb6bd, #e0b5ff);
+  background-size: 150% 150%;
+  animation: backgroundAnimation 10s ease infinite;
+}
+
+.container-top {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 22px;
+  background: var(--pink);
+  border-bottom: 1px solid #d8a9ce;
+}
+
+.logo {
+  color: #55205c;
+  text-decoration: none;
+  font-size: 25px;
+  font-weight: 800;
+}
+
+.profile-buttons { display: flex; gap: 8px; }
+.profile-buttons a {
+  padding: 8px 11px;
+  border-radius: 7px;
+  background: var(--purple);
+  color: #fff;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.main {
+  position: relative;
+  z-index: 2;
+  width: min(980px, calc(100% - 28px));
+  margin: 48px auto;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.header__title { margin-bottom: 8px; font-size: 38px; }
+
+.leaderboards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.section2,
+.section1,
+.history {
+  padding: 22px;
+  background: rgba(255,255,255,.92);
+  border: 1px solid rgba(255,255,255,.8);
+  border-radius: 16px;
+  box-shadow: 0 12px 32px rgba(84, 61, 90, .12);
+}
+
+.section__title { margin-top: 0; }
+.section__content { line-height: 1.5; }
+
+.history { margin-top: 20px; }
+.history a { color: #6e2678; font-weight: 800; text-decoration: none; }
+
+@keyframes backgroundAnimation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Lightweight version of the celebratory firework idea from the original page. */
+.firework {
+  position: fixed;
+  z-index: 1;
+  width: 8px;
+  height: 8px;
+  top: 22%;
+  left: 15%;
+  border-radius: 50%;
+  box-shadow:
+    0 -35px #fff,
+    25px -24px #ffd54f,
+    35px 0 #fff,
+    25px 24px #f06292,
+    0 35px #fff,
+    -25px 24px #ce93d8,
+    -35px 0 #fff,
+    -25px -24px #80deea;
+  animation: sparkle 2.8s ease-in-out infinite;
+}
+
+.firework:nth-of-type(2) { left: 78%; top: 30%; animation-delay: -.9s; }
+.firework:nth-of-type(3) { left: 52%; top: 15%; animation-delay: -1.7s; }
+
+@keyframes sparkle {
+  0%, 100% { transform: scale(.6); opacity: .25; }
+  50% { transform: scale(1.25); opacity: .85; }
+}
+
+@media (max-width: 700px) {
+  .leaderboards { grid-template-columns: 1fr; }
+  .container-top { align-items: flex-start; flex-direction: column; }
+}

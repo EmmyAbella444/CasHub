@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CasHub · Student Profile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
+</head>
+<body>
+<header class="container-top">
+    <a class="logo" href="{{ url_for('home') }}">CasHub</a>
+    <nav class="profile-buttons">
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('statistics') }}">Statistics</a>
+        <a href="{{ url_for('profile_user') }}">My profile</a>
+    </nav>
+</header>
+
+<main>
+    <section class="container-profile">
+        <h2>{{ user_data[0] }}'s profile</h2>
+        <div class="profile-grid">
+            <p><strong>Username</strong><span>{{ user_data[0] }}</span></p>
+            <p><strong>Email</strong><span>{{ user_data[1] }}</span></p>
+            <p><strong>Biography</strong><span>{{ user_data[2] or "No biography yet." }}</span></p>
+            <p><strong>Clubs</strong><span>{{ user_data[3] or "No clubs selected." }}</span></p>
+        </div>
+    </section>
+
+    <section class="container-posts">
+        <h3>{{ user_data[0] }}'s posts</h3>
+
+        {% if not posts %}
+            <div class="empty-state">This student has not posted yet.</div>
+        {% endif %}
+
+        {% for p in posts %}
+            <article class="post-container">
+                <div class="post-heading">
+                    <span class="post-username">{{ p[7] }}</span>
+                    <span class="post-datetime">{{ p[6] }}</span>
+                </div>
+
+                <span class="post-title">{{ p[1] }}</span>
+
+                {% if p[8] %}
+                    <img class="post-image"
+                         src="{{ url_for('static', filename='images/' + p[8]) }}"
+                         alt="Image attached to {{ p[1] }}">
+                {% endif %}
+
+                <div class="post-info">
+                    <span class="post-clubs">{{ p[3] }}</span>
+                    <p>{{ p[2] }}</p>
+
+                    <form method="POST" action="{{ url_for('like_post', post_id=p[0]) }}">
+                        <button class="like-button" type="submit">♡ <span>{{ p[4] }}</span></button>
+                    </form>
+
+                    <div class="post-comments">
+                        <h4>Comments</h4>
+                        {% for c in comments_dict[p[0]] %}
+                            <div class="comment-container">
+                                <span class="comment-username">{{ c[1] }}:</span>
+                                <span>{{ c[0] }}</span>
+                            </div>
+                        {% else %}
+                            <p class="no-comments">No comments yet.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </article>
+        {% endfor %}
+    </section>
+</main>
+</body>
+</html>

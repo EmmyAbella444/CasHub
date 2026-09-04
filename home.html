@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CasHub · Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+</head>
+<body>
+<header class="container-top">
+    <a class="logo" href="{{ url_for('home') }}">CasHub</a>
+    <nav class="profile-buttons" aria-label="Main navigation">
+        <a href="{{ url_for('statistics') }}">Statistics</a>
+        <a href="{{ url_for('profile_user') }}">Profile</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </nav>
+</header>
+
+{% include "_messages.html" %}
+
+<main class="home-layout">
+    <section class="container-newpost">
+        <h2>Add New Post</h2>
+        <form name="post" action="{{ url_for('home') }}" method="POST" enctype="multipart/form-data">
+            <label class="label" for="post-title">Title</label>
+            <input type="text" id="post-title" name="post-title" required
+                   placeholder="Enter post title...">
+
+            <label class="label" for="post-content">Content</label>
+            <textarea id="post-content" name="post-content" rows="8" required
+                      placeholder="Enter the description and your reflection..."></textarea>
+
+            <label for="date">Date</label>
+            <input type="date" id="date" name="date" required>
+
+            <label for="clubs">Club</label>
+            <select id="clubs" name="clubs[]" multiple required>
+                <optgroup label="Core clubs">
+                    <option value="Rainbow Alliance">Rainbow Alliance</option>
+                    <option value="Peace Forum">Peace Forum</option>
+                    <option value="ICE">ICE</option>
+                </optgroup>
+                <optgroup label="Student-led clubs">
+                    <option value="Politics club">Politics club</option>
+                    <option value="Entrepreneurship">Entrepreneurship</option>
+                </optgroup>
+            </select>
+
+            <label for="file">Upload a picture <span class="optional">(optional)</span></label>
+            <input type="file" id="file" name="file" accept=".png,.jpg,.jpeg,.gif,.webp,image/*">
+
+            <input type="submit" value="Submit">
+        </form>
+    </section>
+
+    <section class="feed">
+        <div class="container-posts">
+            <h3>Recent Posts from your peers</h3>
+        </div>
+
+        {% if not posts %}
+            <div class="empty-state">No activities yet. Be the first to post.</div>
+        {% endif %}
+
+        {% for p in posts %}
+            <article class="post-container">
+                <div class="post-heading">
+                    <span class="post-username">{{ p[7] }}</span>
+                    <span class="post-datetime">{{ p[6] }}</span>
+                </div>
+
+                <span class="post-title">{{ p[1] }}</span>
+
+                {% if p[8] %}
+                    <img class="post-image"
+                         src="{{ url_for('static', filename='images/' + p[8]) }}"
+                         alt="Image attached to {{ p[1] }}">
+                {% endif %}
+
+                <div class="post-info">
+                    <span class="post-clubs">{{ p[3] }}</span>
+                    <p class="post-content">{{ p[2] }}</p>
+
+                    <form method="POST" action="{{ url_for('like_post', post_id=p[0]) }}">
+                        <button class="like-button" type="submit" aria-label="Toggle like">
+                            ♡ <span>{{ p[4] }}</span>
+                        </button>
+                    </form>
+
+                    <div class="post-comments">
+                        <h4>Comments</h4>
+                        {% for c in comments_dict[p[0]] %}
+                            <div class="comment-container">
+                                <span class="comment-username">{{ c[1] }}:</span>
+                                <span class="comment-content">{{ c[0] }}</span>
+                            </div>
+                        {% else %}
+                            <p class="no-comments">No comments yet.</p>
+                        {% endfor %}
+                    </div>
+
+                    <form class="comment-form"
+                          action="{{ url_for('add_comment', post_id=p[0]) }}"
+                          method="POST">
+                        <input type="text" name="comment" placeholder="Add a comment..." required>
+                        <button type="submit">Post</button>
+                    </form>
+                </div>
+            </article>
+        {% endfor %}
+    </section>
+</main>
+</body>
+</html>
